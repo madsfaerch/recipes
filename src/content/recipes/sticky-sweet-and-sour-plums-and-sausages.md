@@ -10,6 +10,19 @@ author: Ottolenghi Test Kitchen
 source: https://thehappyfoodie.co.uk/recipes/sticky-sweet-and-sour-plums-and-sausages/
 added: 2026-01-29
 tags: [sausages, one-tray, ottolenghi, plums, autumn]
+shoppingIngredients:
+  - 5 red onions (750g)
+  - 2 heads of garlic
+  - 3 baking potatoes (750g)
+  - 120ml olive oil
+  - 10 red plums (750g)
+  - 3 rosemary sprigs
+  - 8 pork sausages
+  - 3 tbsp apple cider vinegar
+  - 90g pomegranate molasses
+  - 50g light brown sugar
+  - 2 tbsp sumac
+  - 10g parsley
 ---
 
 ## Ingredients

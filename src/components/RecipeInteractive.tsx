@@ -8,9 +8,10 @@ import { parseIngredient, scaleText, formatNum, escapeHtml } from "./RecipeScale
 interface Props {
   originalServings: number;
   ingredientGroups: IngredientGroup[];
+  shoppingIngredients?: string[];
 }
 
-export default function RecipeInteractive({ originalServings, ingredientGroups }: Props) {
+export default function RecipeInteractive({ originalServings, ingredientGroups, shoppingIngredients }: Props) {
   const [servings, setServings] = useState(originalServings);
   const ratio = servings / originalServings;
 
@@ -71,6 +72,7 @@ export default function RecipeInteractive({ originalServings, ingredientGroups }
           ingredientGroups={ingredientGroups}
           originalServings={originalServings}
           currentServings={servings}
+          shoppingIngredients={shoppingIngredients}
         />
       </div>
     </div>

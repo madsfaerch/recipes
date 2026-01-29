@@ -10,6 +10,19 @@ author: The Foodie Takes Flight
 source: https://thefoodietakesflight.com/sweet-chili-tahini-noodles/
 added: 2025-01-29
 tags: [noodles, spicy, vegan, quick]
+shoppingIngredients:
+  - 1 tbsp neutral oil
+  - 1 small shallot
+  - 3 cloves garlic
+  - 1.5 tbsp gochujang
+  - 1.5 tbsp soy sauce
+  - 2 tbsp hon mirin
+  - 1 tbsp maple syrup
+  - 2 tsp vinegar
+  - 2 tbsp tahini
+  - Sesame oil
+  - Chili oil
+  - Thick wheat noodles
 ---
 
 ## Ingredients

@@ -10,6 +10,24 @@ author: Yotam Ottolenghi
 source: https://ottolenghi.co.uk/pages/recipes/confit-tandoori-chickpeas
 added: 2025-01-29
 tags: [chickpeas, spicy, one-pot, ottolenghi]
+shoppingIngredients:
+  - 2 tins chickpeas (800g)
+  - 11 garlic cloves
+  - 30g fresh ginger
+  - 400g cherry tomatoes
+  - 3 red chillies
+  - 1 tbsp tomato paste
+  - 2 tsp cumin seeds
+  - 2 tsp coriander seeds
+  - ½ tsp turmeric
+  - ½ tsp chilli flakes
+  - 2 tsp Kashmiri chilli powder
+  - 1 tsp caster sugar
+  - 200ml olive oil
+  - 180g Greek yoghurt
+  - 15g mint
+  - 30g fresh coriander
+  - 1 lime
 ---
 
 ## Ingredients

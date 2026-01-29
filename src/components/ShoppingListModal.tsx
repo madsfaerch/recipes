@@ -4,17 +4,27 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { IngredientGroup } from "./RecipeScaler";
-import { getScaledIngredients } from "./RecipeScaler";
+import { getScaledIngredients, parseIngredient, scaleText } from "./RecipeScaler";
 
 interface Props {
   ingredientGroups: IngredientGroup[];
   originalServings: number;
   currentServings: number;
+  shoppingIngredients?: string[];
 }
 
-export default function ShoppingListModal({ ingredientGroups, originalServings, currentServings }: Props) {
+export default function ShoppingListModal({ ingredientGroups, originalServings, currentServings, shoppingIngredients }: Props) {
   const scaledGroups = getScaledIngredients(ingredientGroups, originalServings, currentServings);
-  const allItems = scaledGroups.flatMap((g) => g.items.map((i) => i.text));
+  const ratio = currentServings / originalServings;
+
+  // Use shopping ingredients (scaled) if available, otherwise fall back to full ingredients
+  const allItems = shoppingIngredients
+    ? shoppingIngredients.map((item) => {
+        if (ratio === 1) return item;
+        const parsed = parseIngredient(item);
+        return scaleText(parsed, ratio).text;
+      })
+    : scaledGroups.flatMap((g) => g.items.map((i) => i.text));
 
   const [checked, setChecked] = useState<Record<number, boolean>>(() => {
     const init: Record<number, boolean> = {};
