@@ -6,6 +6,7 @@ cuisine: Indian / Middle Eastern
 servings: "4"
 prepTime: "15 min"
 cookTime: "2–3 hours"
+author: Yotam Ottolenghi
 source: https://ottolenghi.co.uk/pages/recipes/confit-tandoori-chickpeas
 added: 2025-01-29
 tags: [chickpeas, spicy, one-pot, ottolenghi]

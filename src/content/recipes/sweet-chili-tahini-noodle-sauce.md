@@ -6,6 +6,7 @@ cuisine: Asian Fusion
 servings: "2 portions"
 prepTime: "5 min"
 cookTime: "10 min"
+author: The Foodie Takes Flight
 source: https://thefoodietakesflight.com/sweet-chili-tahini-noodles/
 added: 2025-01-29
 tags: [noodles, spicy, vegan, quick]
