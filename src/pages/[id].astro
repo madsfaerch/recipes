@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import RecipeInteractive from '../components/RecipeInteractive';
 
 export async function getStaticPaths() {
   const recipes = await getCollection('recipes');
@@ -12,6 +13,51 @@ export async function getStaticPaths() {
 
 const { recipe } = Astro.props;
 const { Content } = await render(recipe);
+
+// Parse ingredient groups from raw markdown body
+function parseIngredientGroups(body: string) {
+  const lines = body.split('\n');
+  const groups: { heading?: string; items: { text: string }[] }[] = [];
+  let inIngredients = false;
+  let currentGroup: { heading?: string; items: { text: string }[] } | null = null;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    if (/^##\s+ingredients/i.test(trimmed)) {
+      inIngredients = true;
+      currentGroup = { items: [] };
+      groups.push(currentGroup);
+      continue;
+    }
+
+    if (inIngredients && /^##\s+/.test(trimmed) && !/ingredients/i.test(trimmed)) {
+      inIngredients = false;
+      currentGroup = null;
+      continue;
+    }
+
+    if (!inIngredients) continue;
+
+    if (/^###\s+/.test(trimmed)) {
+      const heading = trimmed.replace(/^###\s+/, '');
+      currentGroup = { heading, items: [] };
+      groups.push(currentGroup);
+      continue;
+    }
+
+    if (/^-\s+/.test(trimmed) && currentGroup) {
+      const text = trimmed.replace(/^-\s+/, '').replace(/\*\*/g, '');
+      currentGroup.items.push({ text });
+    }
+  }
+
+  return groups;
+}
+
+const ingredientGroups = parseIngredientGroups(recipe.body || '');
+const originalServings = parseInt(recipe.data.servings || '0', 10);
+const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
 ---
 
 <Base title={recipe.data.title}>
@@ -28,14 +74,7 @@ const { Content } = await render(recipe);
 
       <div class="flex flex-wrap gap-4 mt-4 text-sm text-stone-500">
         {recipe.data.cuisine && <span>🌍 {recipe.data.cuisine}</span>}
-        {recipe.data.servings && (
-          <span class="inline-flex items-center gap-1.5" id="servings-control" data-original={recipe.data.servings}>
-            🍽
-            <button type="button" class="servings-btn w-6 h-6 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-700 text-sm font-bold leading-none transition-colors" data-dir="-1">−</button>
-            <span id="servings-value" class="font-medium text-stone-700 min-w-[1.5ch] text-center">{recipe.data.servings}</span>
-            <button type="button" class="servings-btn w-6 h-6 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-700 text-sm font-bold leading-none transition-colors" data-dir="1">+</button>
-          </span>
-        )}
+        {recipe.data.servings && !hasInteractive && <span>🍽 {recipe.data.servings}</span>}
         {recipe.data.prepTime && <span>⏱ Prep: {recipe.data.prepTime}</span>}
         {recipe.data.cookTime && <span>🔥 Cook: {recipe.data.cookTime}</span>}
       </div>
@@ -50,30 +89,14 @@ const { Content } = await render(recipe);
     </header>
 
     <div id="recipe-content" class="prose prose-stone prose-headings:font-serif prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-li:my-0.5 max-w-none">
+      {hasInteractive && (
+        <RecipeInteractive
+          client:load
+          originalServings={originalServings}
+          ingredientGroups={ingredientGroups}
+        />
+      )}
       <Content />
-    </div>
-
-    <!-- Shopping List Modal -->
-    <div id="shopping-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div class="bg-cream rounded-xl shadow-xl max-w-md w-full mx-4 max-h-[80vh] flex flex-col">
-        <div class="flex items-center justify-between px-6 py-4 border-b border-stone-200">
-          <h3 class="font-serif text-lg font-bold text-stone-900">Shopping List</h3>
-          <button id="modal-close" class="text-stone-400 hover:text-stone-600 text-xl leading-none">&times;</button>
-        </div>
-        <div id="shopping-items" class="px-6 py-4 overflow-y-auto flex-1 space-y-2"></div>
-        <div class="px-6 py-4 border-t border-stone-200 flex gap-3">
-          <button id="select-all-btn" class="text-xs text-stone-400 hover:text-stone-600 mr-auto">Select all</button>
-          <button id="copy-btn" class="px-4 py-2 text-sm rounded-lg bg-stone-800 text-cream hover:bg-stone-700 transition-colors">📋 Copy</button>
-          <button id="reminders-btn" class="px-4 py-2 text-sm rounded-lg bg-spice/90 text-white hover:bg-spice transition-colors">🍎 Reminders</button>
-        </div>
-        <div id="copy-toast" class="hidden px-6 py-2 text-center text-sm text-green-700 bg-green-50 rounded-b-xl">Copied to clipboard!</div>
-      </div>
-    </div>
-
-    <div class="mt-8">
-      <button id="shopping-btn" class="px-5 py-2.5 rounded-lg bg-stone-800 text-cream hover:bg-stone-700 transition-colors text-sm font-medium">
-        🛒 Add to Shopping List
-      </button>
     </div>
 
     {(recipe.data.author || recipe.data.source) && (
@@ -86,173 +109,29 @@ const { Content } = await render(recipe);
     )}
   </article>
 
-  <script>
-    // --- Servings Scaler ---
-    const control = document.getElementById('servings-control');
-    const valueEl = document.getElementById('servings-value');
-    if (control && valueEl) {
-      const original = parseInt(control.dataset.original || '0', 10);
-      let current = original;
-
-      // Find all ingredient <li> elements (under h2 "Ingredients")
-      const content = document.getElementById('recipe-content');
-      const ingredientLists: HTMLUListElement[] = [];
-      if (content) {
-        const headings = content.querySelectorAll('h2, h3');
-        let capturing = false;
-        headings.forEach(h => {
-          if (/ingredients/i.test(h.textContent || '')) capturing = true;
-          else if (h.tagName === 'H2') capturing = false;
-          if (capturing) {
-            let el = h.nextElementSibling;
-            while (el && el.tagName === 'UL') {
-              ingredientLists.push(el as HTMLUListElement);
-              el = el.nextElementSibling;
+  {hasInteractive && (
+    <script>
+      // Hide markdown-rendered ingredients section (React takes over)
+      const reactEl = document.getElementById('react-ingredients');
+      if (reactEl) {
+        const content = document.getElementById('recipe-content');
+        if (content) {
+          let hide = false;
+          for (const child of Array.from(content.children)) {
+            if (child.tagName === 'H2' && /ingredients/i.test(child.textContent || '')) {
+              hide = true;
+              (child as HTMLElement).style.display = 'none';
+              continue;
+            }
+            if (child.tagName === 'H2' && hide) {
+              hide = false;
+            }
+            if (hide && child.id !== 'react-ingredients' && !child.querySelector('#react-ingredients')) {
+              (child as HTMLElement).style.display = 'none';
             }
           }
-        });
-      }
-
-      interface ParsedItem { li: HTMLLIElement; original: string; parts: { before: string; num: number; after: string }[] }
-      const parsed: ParsedItem[] = [];
-
-      // Parse numbers from ingredient lines - handles "1.5", "½", "1½", "750"
-      const NUM_RE = /(\d+\s*[½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞]|[½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞]|\d+\.?\d*)/g;
-      const FRAC_MAP: Record<string, number> = { '½':.5,'⅓':.333,'⅔':.667,'¼':.25,'¾':.75,'⅕':.2,'⅖':.4,'⅗':.6,'⅘':.8,'⅙':.167,'⅚':.833,'⅛':.125,'⅜':.375,'⅝':.625,'⅞':.875 };
-
-      function parseNum(s: string): number {
-        s = s.trim();
-        for (const [ch, v] of Object.entries(FRAC_MAP)) {
-          if (s.includes(ch)) {
-            const before = s.replace(ch, '').trim();
-            return (before ? parseFloat(before) : 0) + v;
-          }
         }
-        return parseFloat(s);
       }
-
-      function formatNum(n: number): string {
-        // Try nice fractions
-        const whole = Math.floor(n);
-        const frac = n - whole;
-        const niceFrags: [number, string][] = [[.5,'½'],[.333,'⅓'],[.667,'⅔'],[.25,'¼'],[.75,'¾'],[.125,'⅛']];
-        for (const [v, ch] of niceFrags) {
-          if (Math.abs(frac - v) < 0.02) return whole ? `${whole}${ch}` : ch;
-        }
-        if (frac < 0.02) return String(whole);
-        // Round to 1 decimal
-        const r = Math.round(n * 10) / 10;
-        return r % 1 === 0 ? String(r) : r.toFixed(1);
-      }
-
-      ingredientLists.forEach(ul => {
-        ul.querySelectorAll('li').forEach(li => {
-          const text = li.textContent || '';
-          const parts: ParsedItem['parts'] = [];
-          let match;
-          let lastIdx = 0;
-          const re = new RegExp(NUM_RE.source, 'g');
-          while ((match = re.exec(text)) !== null) {
-            parts.push({ before: text.slice(lastIdx, match.index), num: parseNum(match[0]), after: '' });
-            lastIdx = re.lastIndex;
-          }
-          if (parts.length > 0) {
-            // Store trailing text in last part
-            parts[parts.length - 1].after = text.slice(lastIdx);
-            parsed.push({ li, original: li.innerHTML, parts });
-          }
-        });
-      });
-
-      function update() {
-        if (!original) return;
-        const ratio = current / original;
-        valueEl!.textContent = String(current);
-        parsed.forEach(({ li, original: origHTML, parts }) => {
-          if (ratio === 1) {
-            li.innerHTML = origHTML;
-            return;
-          }
-          let rebuilt = '';
-          parts.forEach(p => {
-            const scaled = p.num * ratio;
-            const formatted = formatNum(scaled);
-            rebuilt += p.before + `<strong class="text-spice">${formatted}</strong>` + p.after;
-          });
-          li.innerHTML = rebuilt;
-        });
-      }
-
-      control.querySelectorAll('.servings-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const dir = parseInt((btn as HTMLElement).dataset.dir || '0', 10);
-          const next = current + dir;
-          if (next >= 1 && next <= 99) { current = next; update(); }
-        });
-      });
-
-      // --- Shopping List ---
-      const modal = document.getElementById('shopping-modal')!;
-      const itemsContainer = document.getElementById('shopping-items')!;
-      let allSelected = true;
-
-      document.getElementById('shopping-btn')?.addEventListener('click', () => {
-        itemsContainer.innerHTML = '';
-        const items = getCurrentIngredients();
-        allSelected = true;
-        items.forEach((text, i) => {
-          const label = document.createElement('label');
-          label.className = 'flex items-start gap-3 cursor-pointer group';
-          label.innerHTML = `<input type="checkbox" checked class="mt-1 accent-stone-700 shrink-0" data-idx="${i}"><span class="text-sm text-stone-700 group-hover:text-stone-900">${text}</span>`;
-          itemsContainer.appendChild(label);
-        });
-        modal.classList.remove('hidden');
-      });
-
-      document.getElementById('modal-close')?.addEventListener('click', () => modal.classList.add('hidden'));
-      modal.addEventListener('click', e => { if (e.target === modal) modal.classList.add('hidden'); });
-
-      document.getElementById('select-all-btn')?.addEventListener('click', () => {
-        allSelected = !allSelected;
-        itemsContainer.querySelectorAll('input[type="checkbox"]').forEach((cb: any) => cb.checked = allSelected);
-        (document.getElementById('select-all-btn') as HTMLElement).textContent = allSelected ? 'Deselect all' : 'Select all';
-      });
-
-      function getSelected(): string[] {
-        const items: string[] = [];
-        itemsContainer.querySelectorAll('label').forEach(label => {
-          const cb = label.querySelector('input') as HTMLInputElement;
-          if (cb?.checked) items.push(label.querySelector('span')!.textContent || '');
-        });
-        return items;
-      }
-
-      document.getElementById('copy-btn')?.addEventListener('click', async () => {
-        const text = getSelected().join('\n');
-        await navigator.clipboard.writeText(text);
-        const toast = document.getElementById('copy-toast')!;
-        toast.classList.remove('hidden');
-        setTimeout(() => toast.classList.add('hidden'), 2000);
-      });
-
-      document.getElementById('reminders-btn')?.addEventListener('click', () => {
-        const items = getSelected();
-        const text = items.join('\n');
-        // Try Shortcuts URL scheme — user needs a shortcut named "Add To Reminders"
-        const encoded = encodeURIComponent(text);
-        const url = `shortcuts://run-shortcut?name=Add%20To%20Reminders&input=text&text=${encoded}`;
-        window.location.href = url;
-      });
-
-      function getCurrentIngredients(): string[] {
-        const items: string[] = [];
-        ingredientLists.forEach(ul => {
-          ul.querySelectorAll('li').forEach(li => {
-            items.push(li.textContent?.trim() || '');
-          });
-        });
-        return items;
-      }
-    }
-  </script>
+    </script>
+  )}
 </Base>

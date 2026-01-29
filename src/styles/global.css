@@ -5,6 +5,29 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 30 33% 97%;
+    --foreground: 33 5% 25%;
+    --card: 30 33% 97%;
+    --card-foreground: 33 5% 25%;
+    --popover: 30 33% 97%;
+    --popover-foreground: 33 5% 25%;
+    --primary: 33 5% 25%;
+    --primary-foreground: 30 33% 97%;
+    --secondary: 30 25% 92%;
+    --secondary-foreground: 33 5% 25%;
+    --muted: 30 25% 92%;
+    --muted-foreground: 25 5% 45%;
+    --accent: 30 25% 92%;
+    --accent-foreground: 33 5% 25%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 10% 85%;
+    --input: 30 10% 85%;
+    --ring: 24 55% 49%;
+    --radius: 0.75rem;
+  }
+
   body {
     @apply bg-cream text-stone-800 antialiased;
   }
