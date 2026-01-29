@@ -27,9 +27,11 @@ const recipes = (await getCollection('recipes')).sort(
             {recipe.data.description && (
               <p class="text-stone-500 mt-1">{recipe.data.description}</p>
             )}
-            {recipe.data.author && (
-              <p class="text-xs text-stone-400 mt-1">By {recipe.data.author}</p>
-            )}
+            <div class="flex flex-wrap gap-3 mt-1 text-xs text-stone-400">
+              {recipe.data.author && <span>By {recipe.data.author}</span>}
+              {recipe.data.cookTime && <span>🔥 {recipe.data.cookTime}</span>}
+              {recipe.data.prepTime && <span>⏱ {recipe.data.prepTime}</span>}
+            </div>
             <div class="flex flex-wrap gap-2 mt-3">
               {recipe.data.cuisine && (
                 <span class="text-xs px-2.5 py-1 bg-warm rounded-full text-stone-600">
