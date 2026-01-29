@@ -1,0 +1,57 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const recipes = await getCollection('recipes');
+  return recipes.map((recipe) => ({
+    params: { id: recipe.id },
+    props: { recipe },
+  }));
+}
+
+const { recipe } = Astro.props;
+const { Content } = await render(recipe);
+---
+
+<Base title={recipe.data.title}>
+  <article>
+    <a href="/" class="text-sm text-stone-400 hover:text-spice transition-colors mb-6 inline-block">
+      ← Back to recipes
+    </a>
+
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-stone-900 mb-3">{recipe.data.title}</h1>
+      {recipe.data.description && (
+        <p class="text-lg text-stone-500">{recipe.data.description}</p>
+      )}
+
+      <div class="flex flex-wrap gap-4 mt-4 text-sm text-stone-500">
+        {recipe.data.cuisine && <span>🌍 {recipe.data.cuisine}</span>}
+        {recipe.data.servings && <span>🍽 {recipe.data.servings}</span>}
+        {recipe.data.prepTime && <span>⏱ Prep: {recipe.data.prepTime}</span>}
+        {recipe.data.cookTime && <span>🔥 Cook: {recipe.data.cookTime}</span>}
+      </div>
+
+      {recipe.data.tags && (
+        <div class="flex flex-wrap gap-2 mt-4">
+          {recipe.data.tags.map((tag: string) => (
+            <span class="text-xs px-2.5 py-1 bg-stone-100 rounded-full text-stone-500">{tag}</span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="prose prose-stone prose-headings:font-serif prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-li:my-0.5 max-w-none">
+      <Content />
+    </div>
+
+    {recipe.data.source && (
+      <div class="mt-10 pt-6 border-t border-stone-200">
+        <p class="text-sm text-stone-400">
+          Source: <a href={recipe.data.source} target="_blank" rel="noopener" class="text-spice hover:underline">{recipe.data.source}</a>
+        </p>
+      </div>
+    )}
+  </article>
+</Base>
