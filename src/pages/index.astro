@@ -16,7 +16,7 @@ const recipes = (await getCollection('recipes')).sort(
   <div class="grid gap-6">
     {recipes.map((recipe) => (
       <a
-        href={`${import.meta.env.BASE_URL}/${recipe.id}/`}
+        href={`/${recipe.id}/`}
         class="group block bg-white rounded-xl p-6 shadow-sm border border-stone-100 hover:shadow-md hover:border-spice/20 transition-all"
       >
         <div class="flex items-start justify-between gap-4">
