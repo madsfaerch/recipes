@@ -11,22 +11,22 @@ source: https://www.justonecookbook.com/ponzu-sauce/
 added: 2026-01-29
 tags: [japanese, sauce, citrus, dipping, dashi]
 shoppingIngredients:
-  - ½ cup soy sauce
-  - ½ cup citrus juice (lemon + orange)
+  - 120ml soy sauce
+  - 120ml citrus juice (lemon + orange)
   - 1 lemon (for zest)
-  - 2 tbsp mirin
-  - ½ cup katsuobushi (dried bonito flakes)
-  - 1 piece kombu (5g)
+  - 30ml mirin
+  - 10g katsuobushi (dried bonito flakes)
+  - 1 piece kombu (6g)
 ---
 
 ## Ingredients
 
-- ½ cup soy sauce
-- ½ cup citrus juice (mix of lemon, orange, and/or grapefruit — about 6 tbsp lemon + 2 tbsp orange works well)
+- 120ml soy sauce
+- 120ml citrus juice (about 90ml lemon + 30ml orange)
 - Zest from one lemon
-- 2 tbsp mirin (or substitute 2 tsp sugar + 2 tbsp sake)
-- ½ cup katsuobushi (dried bonito flakes), packed
-- 1 piece kombu (dried kelp), 2 × 3 inches (5 × 7.5 cm, 6g)
+- 30ml mirin (or substitute 2 tsp sugar + 30ml sake)
+- 10g katsuobushi (dried bonito flakes), packed
+- 1 piece kombu (dried kelp), 5 × 7.5 cm, 6g
 
 ## Method
 

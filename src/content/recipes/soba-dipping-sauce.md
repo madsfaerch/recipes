@@ -11,20 +11,20 @@ source: https://www.justonecookbook.com/mentsuyu-noodle-soup-base/
 added: 2026-01-29
 tags: [japanese, sauce, soba, dipping, dashi]
 shoppingIngredients:
-  - ½ cup sake
-  - 1⅛ cup mirin
-  - 1 cup soy sauce
+  - 120ml sake
+  - 275ml mirin
+  - 250ml soy sauce
   - 1 piece kombu (5g)
-  - 1 cup katsuobushi (dried bonito flakes)
+  - 10g katsuobushi (dried bonito flakes)
 ---
 
 ## Ingredients
 
-- ½ cup sake
-- 1⅛ cup mirin
-- 1 cup soy sauce
-- 1 piece kombu (dried kelp), 2 × 2 inches (5 × 5 cm, 5g)
-- 1 cup katsuobushi (dried bonito flakes), packed
+- 120ml sake
+- 275ml mirin
+- 250ml soy sauce
+- 1 piece kombu (dried kelp), 5 × 5 cm, 5g
+- 10g katsuobushi (dried bonito flakes), packed
 
 ## Method
 
