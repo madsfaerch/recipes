@@ -1,4 +1,5 @@
 ---
+image: /images/recipes/ponzu-sauce.jpg
 title: Ponzu Sauce
 description: Citrus-based Japanese dipping sauce with soy, mirin, and dashi. Steep overnight for best results — keeps for a month.
 type: sauce

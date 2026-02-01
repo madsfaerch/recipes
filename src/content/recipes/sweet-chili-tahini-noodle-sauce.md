@@ -1,4 +1,5 @@
 ---
+image: /images/recipes/sweet-chili-tahini-noodle-sauce.jpg
 title: Sweet Chili Tahini Noodle Sauce
 description: Spicy, creamy, umami-rich sauce for noodles. 15 minutes, one pan.
 type: sauce

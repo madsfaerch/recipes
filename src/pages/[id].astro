@@ -88,6 +88,14 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
       )}
     </header>
 
+    {recipe.data.image && (
+      <img
+        src={recipe.data.image}
+        alt={recipe.data.title}
+        class="w-full max-h-96 object-cover rounded-xl mb-8"
+      />
+    )}
+
     <div id="recipe-content" class="prose prose-stone prose-headings:font-serif prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-li:my-0.5 max-w-none">
       {hasInteractive && (
         <RecipeInteractive
