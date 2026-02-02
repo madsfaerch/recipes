@@ -108,9 +108,13 @@ export default function RecipeSearch({ recipes }: Props) {
                       </span>
                     )}
                     {(isDa && recipe.daTags ? recipe.daTags : recipe.tags)?.map((tag) => (
-                      <span key={tag} className="text-xs px-2.5 py-1 bg-stone-100 rounded-full text-stone-500">
+                      <button
+                        key={tag}
+                        onClick={(e) => { e.preventDefault(); setQuery(tag); }}
+                        className="text-xs px-2.5 py-1 bg-stone-100 rounded-full text-stone-500 hover:bg-spice/10 hover:text-spice transition-colors cursor-pointer"
+                      >
                         {tag}
-                      </span>
+                      </button>
                     ))}
                   </div>
                 </div>
