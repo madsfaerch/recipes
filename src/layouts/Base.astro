@@ -1,7 +1,5 @@
 ---
 import '../styles/global.css';
-import { ViewTransitions } from 'astro:transitions';
-
 interface Props {
   title: string;
 }
@@ -16,7 +14,6 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} — Mads' Recipes</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <ViewTransitions />
   </head>
   <body class="min-h-screen">
     <header class="border-b border-stone-200 bg-cream/80 backdrop-blur-sm sticky top-0 z-10">
@@ -79,19 +76,14 @@ const { title } = Astro.props;
         if (btn) btn.textContent = locale === 'en' ? 'DA' : 'EN';
       }
 
-      function init() {
-        applyLocale(getLocale());
-        document.getElementById('lang-toggle')?.addEventListener('click', () => {
-          const next = getLocale() === 'en' ? 'da' : 'en';
-          localStorage.setItem('locale', next);
-          applyLocale(next);
-          window.dispatchEvent(new CustomEvent('locale-changed', { detail: next }));
-        });
-      }
+      applyLocale(getLocale());
 
-      // Run on initial load and after View Transition navigations
-      init();
-      document.addEventListener('astro:page-load', init);
+      document.getElementById('lang-toggle')?.addEventListener('click', () => {
+        const next = getLocale() === 'en' ? 'da' : 'en';
+        localStorage.setItem('locale', next);
+        applyLocale(next);
+        window.dispatchEvent(new CustomEvent('locale-changed', { detail: next }));
+      });
     </script>
   </body>
 </html>
