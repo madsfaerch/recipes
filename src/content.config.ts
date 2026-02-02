@@ -17,6 +17,8 @@ const recipes = defineCollection({
     image: z.string().optional(),
     added: z.coerce.date().optional(),
     tags: z.array(z.string()).optional(),
+    locale: z.string().optional().default('en'),
+    ref: z.string().optional(),
   }),
 });
 

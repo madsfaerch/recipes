@@ -4,15 +4,23 @@ import Base from '../layouts/Base.astro';
 import RecipeInteractive from '../components/RecipeInteractive';
 
 export async function getStaticPaths() {
-  const recipes = await getCollection('recipes');
-  return recipes.map((recipe) => ({
-    params: { id: recipe.id },
-    props: { recipe },
-  }));
+  const allRecipes = await getCollection('recipes');
+  const enRecipes = allRecipes.filter((r) => r.data.locale !== 'da');
+  const daRecipes = allRecipes.filter((r) => r.data.locale === 'da');
+
+  return enRecipes.map((recipe) => {
+    const daRecipe = daRecipes.find((r) => r.data.ref === recipe.id);
+    return {
+      params: { id: recipe.id },
+      props: { recipe, daRecipe },
+    };
+  });
 }
 
-const { recipe } = Astro.props;
+const { recipe, daRecipe } = Astro.props;
 const { Content } = await render(recipe);
+const daRender = daRecipe ? await render(daRecipe) : null;
+const DaContent = daRender?.Content;
 
 // Parse ingredient groups from raw markdown body
 function parseIngredientGroups(body: string) {
@@ -66,81 +74,153 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
       ← Back to recipes
     </a>
 
-    <header class="mb-8">
-      <h1 class="text-3xl md:text-4xl font-bold text-stone-900 mb-3">{recipe.data.title}</h1>
-      {recipe.data.description && (
-        <p class="text-lg text-stone-500">{recipe.data.description}</p>
-      )}
+    <!-- English version -->
+    <div data-locale="en">
+      <header class="mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-stone-900 mb-3">{recipe.data.title}</h1>
+        {recipe.data.description && (
+          <p class="text-lg text-stone-500">{recipe.data.description}</p>
+        )}
 
-      <div class="flex flex-wrap gap-4 mt-4 text-sm text-stone-500">
-        {recipe.data.cuisine && <span>🌍 {recipe.data.cuisine}</span>}
-        {recipe.data.servings && !hasInteractive && <span>🍽 {recipe.data.servings}</span>}
-        {recipe.data.prepTime && <span>⏱ <span data-i18n="prep">Prep:</span> {recipe.data.prepTime}</span>}
-        {recipe.data.cookTime && <span>🔥 <span data-i18n="cook">Cook:</span> {recipe.data.cookTime}</span>}
-      </div>
-
-      {recipe.data.tags && (
-        <div class="flex flex-wrap gap-2 mt-4">
-          {recipe.data.tags.map((tag: string) => (
-            <span class="text-xs px-2.5 py-1 bg-stone-100 rounded-full text-stone-500">{tag}</span>
-          ))}
+        <div class="flex flex-wrap gap-4 mt-4 text-sm text-stone-500">
+          {recipe.data.cuisine && <span>🌍 {recipe.data.cuisine}</span>}
+          {recipe.data.servings && !hasInteractive && <span>🍽 {recipe.data.servings}</span>}
+          {recipe.data.prepTime && <span>⏱ <span data-i18n="prep">Prep:</span> {recipe.data.prepTime}</span>}
+          {recipe.data.cookTime && <span>🔥 <span data-i18n="cook">Cook:</span> {recipe.data.cookTime}</span>}
         </div>
-      )}
-    </header>
 
-    {recipe.data.image && (
-      <img
-        src={recipe.data.image}
-        alt={recipe.data.title}
-        class="w-full max-h-96 object-cover rounded-xl mb-8"
-      />
-    )}
+        {recipe.data.tags && (
+          <div class="flex flex-wrap gap-2 mt-4">
+            {recipe.data.tags.map((tag: string) => (
+              <span class="text-xs px-2.5 py-1 bg-stone-100 rounded-full text-stone-500">{tag}</span>
+            ))}
+          </div>
+        )}
+      </header>
 
-    <div id="recipe-content" class="prose prose-stone prose-headings:font-serif prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-li:my-0.5 max-w-none">
-      {hasInteractive && (
-        <RecipeInteractive
-          client:load
-          originalServings={originalServings}
-          ingredientGroups={ingredientGroups}
-          shoppingIngredients={recipe.data.shoppingIngredients}
+      {recipe.data.image && (
+        <img
+          src={recipe.data.image}
+          alt={recipe.data.title}
+          class="w-full max-h-96 object-cover rounded-xl mb-8"
         />
       )}
-      <Content />
+
+      <div id="recipe-content" class="prose prose-stone prose-headings:font-serif prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-li:my-0.5 max-w-none">
+        {hasInteractive && (
+          <RecipeInteractive
+            client:load
+            originalServings={originalServings}
+            ingredientGroups={ingredientGroups}
+            shoppingIngredients={recipe.data.shoppingIngredients}
+          />
+        )}
+        <Content />
+      </div>
+
+      {(recipe.data.author || recipe.data.source) && (
+        <div class="mt-10 pt-6 border-t border-stone-200 text-sm text-stone-400 space-y-1">
+          {recipe.data.author && <p><span data-i18n="by">By</span> {recipe.data.author}</p>}
+          {recipe.data.source && (
+            <p><span data-i18n="source">Source:</span> <a href={recipe.data.source} target="_blank" rel="noopener" class="text-spice hover:underline">{recipe.data.source}</a></p>
+          )}
+        </div>
+      )}
     </div>
 
-    {(recipe.data.author || recipe.data.source) && (
-      <div class="mt-10 pt-6 border-t border-stone-200 text-sm text-stone-400 space-y-1">
-        {recipe.data.author && <p><span data-i18n="by">By</span> {recipe.data.author}</p>}
-        {recipe.data.source && (
-          <p><span data-i18n="source">Source:</span> <a href={recipe.data.source} target="_blank" rel="noopener" class="text-spice hover:underline">{recipe.data.source}</a></p>
+    <!-- Danish version -->
+    {daRecipe && DaContent && (
+      <div data-locale="da" style="display:none;">
+        <header class="mb-8">
+          <h1 class="text-3xl md:text-4xl font-bold text-stone-900 mb-3">{daRecipe.data.title}</h1>
+          {daRecipe.data.description && (
+            <p class="text-lg text-stone-500">{daRecipe.data.description}</p>
+          )}
+
+          <div class="flex flex-wrap gap-4 mt-4 text-sm text-stone-500">
+            {daRecipe.data.cuisine && <span>🌍 {daRecipe.data.cuisine}</span>}
+            {daRecipe.data.servings && !hasInteractive && <span>🍽 {daRecipe.data.servings}</span>}
+            {daRecipe.data.prepTime && <span>⏱ <span data-i18n="prep">Prep:</span> {daRecipe.data.prepTime}</span>}
+            {daRecipe.data.cookTime && <span>🔥 <span data-i18n="cook">Cook:</span> {daRecipe.data.cookTime}</span>}
+          </div>
+
+          {daRecipe.data.tags && (
+            <div class="flex flex-wrap gap-2 mt-4">
+              {daRecipe.data.tags.map((tag: string) => (
+                <span class="text-xs px-2.5 py-1 bg-stone-100 rounded-full text-stone-500">{tag}</span>
+              ))}
+            </div>
+          )}
+        </header>
+
+        {daRecipe.data.image && (
+          <img
+            src={daRecipe.data.image}
+            alt={daRecipe.data.title}
+            class="w-full max-h-96 object-cover rounded-xl mb-8"
+          />
+        )}
+
+        <div class="prose prose-stone prose-headings:font-serif prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-li:my-0.5 max-w-none">
+          {hasInteractive && (
+            <RecipeInteractive
+              client:load
+              originalServings={originalServings}
+              ingredientGroups={parseIngredientGroups(daRecipe.body || '')}
+              shoppingIngredients={daRecipe.data.shoppingIngredients}
+            />
+          )}
+          <DaContent />
+        </div>
+
+        {(daRecipe.data.author || daRecipe.data.source) && (
+          <div class="mt-10 pt-6 border-t border-stone-200 text-sm text-stone-400 space-y-1">
+            {daRecipe.data.author && <p><span data-i18n="by">By</span> {daRecipe.data.author}</p>}
+            {daRecipe.data.source && (
+              <p><span data-i18n="source">Source:</span> <a href={daRecipe.data.source} target="_blank" rel="noopener" class="text-spice hover:underline">{daRecipe.data.source}</a></p>
+            )}
+          </div>
         )}
       </div>
     )}
   </article>
 
+  <script>
+    // Locale toggle for recipe content
+    function updateRecipeLocale() {
+      const locale = localStorage.getItem('locale') || 'en';
+      const enDiv = document.querySelector('[data-locale="en"]') as HTMLElement;
+      const daDiv = document.querySelector('[data-locale="da"]') as HTMLElement;
+      if (enDiv) enDiv.style.display = locale === 'da' && daDiv ? 'none' : '';
+      if (daDiv) daDiv.style.display = locale === 'da' ? '' : 'none';
+    }
+    updateRecipeLocale();
+    window.addEventListener('locale-changed', updateRecipeLocale);
+  </script>
+
   {hasInteractive && (
     <script>
       // Hide markdown-rendered ingredients section (React takes over)
-      const reactEl = document.getElementById('react-ingredients');
-      if (reactEl) {
-        const content = document.getElementById('recipe-content');
-        if (content) {
-          let hide = false;
-          for (const child of Array.from(content.children)) {
-            if (child.tagName === 'H2' && /ingredients/i.test(child.textContent || '')) {
-              hide = true;
-              (child as HTMLElement).style.display = 'none';
-              continue;
-            }
-            if (child.tagName === 'H2' && hide) {
-              hide = false;
-            }
-            if (hide && child.id !== 'react-ingredients' && !child.querySelector('#react-ingredients')) {
-              (child as HTMLElement).style.display = 'none';
-            }
+      document.querySelectorAll('[data-locale]').forEach((localeDiv) => {
+        const proseDiv = localeDiv.querySelector('.prose');
+        if (!proseDiv) return;
+        const reactEl = proseDiv.querySelector('#react-ingredients');
+        if (!reactEl) return;
+        let hide = false;
+        for (const child of Array.from(proseDiv.children)) {
+          if (child.tagName === 'H2' && /ingredients|ingredienser/i.test(child.textContent || '')) {
+            hide = true;
+            (child as HTMLElement).style.display = 'none';
+            continue;
+          }
+          if (child.tagName === 'H2' && hide) {
+            hide = false;
+          }
+          if (hide && child.id !== 'react-ingredients' && !child.querySelector('#react-ingredients')) {
+            (child as HTMLElement).style.display = 'none';
           }
         }
-      }
+      });
     </script>
   )}
 </Base>

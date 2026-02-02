@@ -14,6 +14,10 @@ interface Recipe {
   image?: string;
   cookTime?: string;
   prepTime?: string;
+  daTitle?: string;
+  daDescription?: string;
+  daTags?: string[];
+  daCuisine?: string;
 }
 
 interface Props {
@@ -22,7 +26,8 @@ interface Props {
 
 export default function RecipeSearch({ recipes }: Props) {
   const [query, setQuery] = useState('');
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const isDa = locale === 'da';
 
   const fuse = useMemo(
     () =>
@@ -85,10 +90,10 @@ export default function RecipeSearch({ recipes }: Props) {
               <div className="p-6 flex-1 flex items-start justify-between gap-4">
                 <div>
                   <h2 className="text-xl font-serif font-bold text-stone-900 group-hover:text-spice transition-colors">
-                    {recipe.title}
+                    {isDa && recipe.daTitle ? recipe.daTitle : recipe.title}
                   </h2>
-                  {recipe.description && (
-                    <p className="text-stone-500 mt-1">{recipe.description}</p>
+                  {(isDa ? recipe.daDescription || recipe.description : recipe.description) && (
+                    <p className="text-stone-500 mt-1">{isDa && recipe.daDescription ? recipe.daDescription : recipe.description}</p>
                   )}
                   <div className="flex flex-wrap gap-3 mt-1 text-xs text-stone-400">
                     {recipe.author && <span>{t('by')} {recipe.author}</span>}
@@ -96,12 +101,12 @@ export default function RecipeSearch({ recipes }: Props) {
                     {recipe.prepTime && <span>⏱ {recipe.prepTime}</span>}
                   </div>
                   <div className="flex flex-wrap gap-2 mt-3">
-                    {recipe.cuisine && (
+                    {(isDa ? recipe.daCuisine || recipe.cuisine : recipe.cuisine) && (
                       <span className="text-xs px-2.5 py-1 bg-warm rounded-full text-stone-600">
-                        {recipe.cuisine}
+                        {isDa && recipe.daCuisine ? recipe.daCuisine : recipe.cuisine}
                       </span>
                     )}
-                    {recipe.tags?.map((tag) => (
+                    {(isDa && recipe.daTags ? recipe.daTags : recipe.tags)?.map((tag) => (
                       <span key={tag} className="text-xs px-2.5 py-1 bg-stone-100 rounded-full text-stone-500">
                         {tag}
                       </span>

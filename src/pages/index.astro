@@ -4,14 +4,18 @@ import { render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import RecipeSearch from '../components/RecipeSearch.tsx';
 
-const recipes = (await getCollection('recipes')).sort(
+const allRecipes = (await getCollection('recipes')).sort(
   (a, b) => (b.data.added?.getTime() ?? 0) - (a.data.added?.getTime() ?? 0)
 );
 
+const enRecipes = allRecipes.filter((r) => r.data.locale !== 'da');
+const daRecipes = allRecipes.filter((r) => r.data.locale === 'da');
+
 // Build search index data
 const searchData = await Promise.all(
-  recipes.map(async (recipe) => {
+  enRecipes.map(async (recipe) => {
     const { remarkPluginFrontmatter } = await render(recipe);
+    const daRecipe = daRecipes.find((r) => r.data.ref === recipe.id);
     return {
       id: recipe.id,
       title: recipe.data.title,
@@ -23,6 +27,10 @@ const searchData = await Promise.all(
       image: recipe.data.image,
       cookTime: recipe.data.cookTime,
       prepTime: recipe.data.prepTime,
+      daTitle: daRecipe?.data.title,
+      daDescription: daRecipe?.data.description,
+      daTags: daRecipe?.data.tags,
+      daCuisine: daRecipe?.data.cuisine,
     };
   })
 );
