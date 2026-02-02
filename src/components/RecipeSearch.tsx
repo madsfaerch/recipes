@@ -103,9 +103,12 @@ export default function RecipeSearch({ recipes }: Props) {
                   </div>
                   <div className="flex flex-wrap gap-2 mt-3">
                     {(isDa ? recipe.daCuisine || recipe.cuisine : recipe.cuisine) && (
-                      <span className="text-xs px-2.5 py-1 bg-warm rounded-full text-stone-600">
+                      <button
+                        onClick={(e) => { e.preventDefault(); setQuery((isDa && recipe.daCuisine ? recipe.daCuisine : recipe.cuisine) || ''); }}
+                        className="text-xs px-2.5 py-1 bg-warm rounded-full text-stone-600 hover:bg-spice/10 hover:text-spice transition-colors cursor-pointer"
+                      >
                         {isDa && recipe.daCuisine ? recipe.daCuisine : recipe.cuisine}
-                      </span>
+                      </button>
                     )}
                     {(isDa && recipe.daTags ? recipe.daTags : recipe.tags)?.map((tag) => (
                       <button
