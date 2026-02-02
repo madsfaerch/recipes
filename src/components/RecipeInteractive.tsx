@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Toaster } from "sonner";
 import ShoppingListModal from "./ShoppingListModal";
 import type { IngredientGroup } from "./RecipeScaler";
+import { UtensilsCrossed } from "lucide-react";
 import { parseIngredient, scaleText, formatNum, escapeHtml } from "./RecipeScaler";
 import { useLocale } from "@/lib/useLocale";
 
@@ -28,7 +29,7 @@ export default function RecipeInteractive({ originalServings, ingredientGroups, 
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-serif text-xl font-bold text-stone-900">{t('ingredients')}</h2>
         <span className="inline-flex items-center gap-1.5 text-sm text-stone-500">
-          🍽
+          <UtensilsCrossed className="w-4 h-4" />
           <Button variant="secondary" size="icon" className="h-6 w-6 rounded-full text-sm font-bold" onClick={decrement}>−</Button>
           <span className="font-medium text-stone-700 min-w-[1.5ch] text-center">{servings}</span>
           <Button variant="secondary" size="icon" className="h-6 w-6 rounded-full text-sm font-bold" onClick={increment}>+</Button>

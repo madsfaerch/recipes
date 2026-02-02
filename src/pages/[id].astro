@@ -3,6 +3,8 @@ import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import RecipeInteractive from '../components/RecipeInteractive';
 
+const iconClass = "w-4 h-4 inline-block align-[-2px]";
+
 export async function getStaticPaths() {
   const allRecipes = await getCollection('recipes');
   const enRecipes = allRecipes.filter((r) => r.data.locale !== 'da');
@@ -70,8 +72,8 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
 
 <Base title={recipe.data.title}>
   <article>
-    <a href="/" class="text-sm text-stone-400 hover:text-spice transition-colors mb-6 inline-block" data-i18n="backToRecipes">
-      ← Back to recipes
+    <a href="/" class="text-sm text-stone-400 hover:text-spice transition-colors mb-6 inline-flex items-center gap-1" data-i18n="backToRecipes">
+      <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Back to recipes
     </a>
 
     <!-- English version -->
@@ -83,10 +85,10 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
         )}
 
         <div class="flex flex-wrap gap-4 mt-4 text-sm text-stone-500">
-          {recipe.data.cuisine && <span>🌍 {recipe.data.cuisine}</span>}
-          {recipe.data.servings && !hasInteractive && <span>🍽 {recipe.data.servings}</span>}
-          {recipe.data.prepTime && <span>⏱ <span data-i18n="prep">Prep:</span> {recipe.data.prepTime}</span>}
-          {recipe.data.cookTime && <span>🔥 <span data-i18n="cook">Cook:</span> {recipe.data.cookTime}</span>}
+          {recipe.data.cuisine && <span class="inline-flex items-center gap-1"><svg class={iconClass} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg> {recipe.data.cuisine}</span>}
+          {recipe.data.servings && !hasInteractive && <span class="inline-flex items-center gap-1"><svg class={iconClass} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 2v2"/><path d="M8 2v2"/><path d="m3 7 4.5-1.5L12 7l4.5-1.5L21 7"/><path d="M3 7v6.5c0 3.5 9 3.5 9 0"/><path d="M12 13.5c0 3.5 9 3.5 9 0V7"/></svg> {recipe.data.servings}</span>}
+          {recipe.data.prepTime && <span class="inline-flex items-center gap-1"><svg class={iconClass} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> <span data-i18n="prep">Prep:</span> {recipe.data.prepTime}</span>}
+          {recipe.data.cookTime && <span class="inline-flex items-center gap-1"><svg class={iconClass} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> <span data-i18n="cook">Cook:</span> {recipe.data.cookTime}</span>}
         </div>
 
         {recipe.data.tags && (
@@ -138,10 +140,10 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
           )}
 
           <div class="flex flex-wrap gap-4 mt-4 text-sm text-stone-500">
-            {daRecipe.data.cuisine && <span>🌍 {daRecipe.data.cuisine}</span>}
-            {daRecipe.data.servings && !hasInteractive && <span>🍽 {daRecipe.data.servings}</span>}
-            {daRecipe.data.prepTime && <span>⏱ <span data-i18n="prep">Prep:</span> {daRecipe.data.prepTime}</span>}
-            {daRecipe.data.cookTime && <span>🔥 <span data-i18n="cook">Cook:</span> {daRecipe.data.cookTime}</span>}
+            {daRecipe.data.cuisine && <span class="inline-flex items-center gap-1"><svg class={iconClass} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg> {daRecipe.data.cuisine}</span>}
+            {daRecipe.data.servings && !hasInteractive && <span class="inline-flex items-center gap-1"><svg class={iconClass} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 2v2"/><path d="M8 2v2"/><path d="m3 7 4.5-1.5L12 7l4.5-1.5L21 7"/><path d="M3 7v6.5c0 3.5 9 3.5 9 0"/><path d="M12 13.5c0 3.5 9 3.5 9 0V7"/></svg> {daRecipe.data.servings}</span>}
+            {daRecipe.data.prepTime && <span class="inline-flex items-center gap-1"><svg class={iconClass} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> <span data-i18n="prep">Prep:</span> {daRecipe.data.prepTime}</span>}
+            {daRecipe.data.cookTime && <span class="inline-flex items-center gap-1"><svg class={iconClass} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> <span data-i18n="cook">Cook:</span> {daRecipe.data.cookTime}</span>}
           </div>
 
           {daRecipe.data.tags && (

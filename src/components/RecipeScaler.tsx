@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import { UtensilsCrossed } from "lucide-react";
 
 // Fraction maps
 const FRAC_MAP: Record<string, number> = {
@@ -109,7 +110,7 @@ export default function RecipeScaler({ originalServings, ingredientGroups }: Pro
     <div>
       {/* Servings control */}
       <span className="inline-flex items-center gap-1.5">
-        🍽
+        <UtensilsCrossed className="w-4 h-4" />
         <Button variant="secondary" size="icon" className="h-6 w-6 rounded-full text-sm font-bold" onClick={decrement}>
           −
         </Button>

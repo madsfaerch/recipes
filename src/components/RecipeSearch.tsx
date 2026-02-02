@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import Fuse from 'fuse.js';
 import { useLocale } from '@/lib/useLocale';
+import { Flame, Clock, ArrowRight } from 'lucide-react';
 
 interface Recipe {
   id: string;
@@ -98,8 +99,8 @@ export default function RecipeSearch({ recipes }: Props) {
                   )}
                   <div className="flex flex-wrap gap-3 mt-1 text-xs text-stone-400">
                     {recipe.author && <span>{t('by')} {recipe.author}</span>}
-                    {recipe.cookTime && <span>🔥 {recipe.cookTime}</span>}
-                    {recipe.prepTime && <span>⏱ {recipe.prepTime}</span>}
+                    {recipe.cookTime && <span className="inline-flex items-center gap-1"><Flame className="w-3 h-3" /> {recipe.cookTime}</span>}
+                    {recipe.prepTime && <span className="inline-flex items-center gap-1"><Clock className="w-3 h-3" /> {recipe.prepTime}</span>}
                   </div>
                   <div className="flex flex-wrap gap-2 mt-3">
                     {(isDa ? recipe.daCuisine || recipe.cuisine : recipe.cuisine) && (
@@ -121,7 +122,7 @@ export default function RecipeSearch({ recipes }: Props) {
                     ))}
                   </div>
                 </div>
-                <span className="text-stone-300 group-hover:text-spice transition-colors text-xl mt-1">→</span>
+                <ArrowRight className="w-5 h-5 text-stone-300 group-hover:text-spice transition-colors mt-1 flex-shrink-0" />
               </div>
             </div>
           </a>
