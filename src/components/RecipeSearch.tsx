@@ -79,10 +79,10 @@ export default function RecipeSearch({ recipes }: Props) {
               {recipe.image && (
                 <div className="aspect-square sm:w-48 sm:min-w-[12rem] sm:aspect-auto sm:self-stretch flex-shrink-0 overflow-hidden bg-stone-100">
                   <img
-                    src={`/.netlify/images?url=${encodeURIComponent(recipe.image)}&w=384&h=384&fit=cover&fm=webp&q=75`}
+                    src={`/.netlify/images?url=${encodeURIComponent(recipe.image)}&w=384&fit=cover&fm=webp&q=75`}
+                    srcSet={[192, 384, 640].map(w => `/.netlify/images?url=${encodeURIComponent(recipe.image)}&w=${w}&fit=cover&fm=webp&q=75 ${w}w`).join(', ')}
+                    sizes="(min-width: 640px) 192px, 100vw"
                     alt={recipe.title}
-                    width={384}
-                    height={384}
                     className="w-full h-full object-cover"
                     loading="lazy"
                     decoding="async"

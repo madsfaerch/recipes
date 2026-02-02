@@ -103,8 +103,9 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
       {recipe.data.image && (
         <img
           src={`/.netlify/images?url=${encodeURIComponent(recipe.data.image)}&w=768&fm=webp&q=80`}
+          srcset={[384, 640, 768].map(w => `/.netlify/images?url=${encodeURIComponent(recipe.data.image)}&w=${w}&fm=webp&q=80 ${w}w`).join(', ')}
+          sizes="(min-width: 768px) 768px, 100vw"
           alt={recipe.data.title}
-          width={768}
           class="w-full max-h-96 object-cover rounded-xl mb-8"
           fetchpriority="high"
         />
@@ -160,8 +161,9 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
         {daRecipe.data.image && (
           <img
             src={`/.netlify/images?url=${encodeURIComponent(daRecipe.data.image)}&w=768&fm=webp&q=80`}
+            srcset={[384, 640, 768].map(w => `/.netlify/images?url=${encodeURIComponent(daRecipe.data.image)}&w=${w}&fm=webp&q=80 ${w}w`).join(', ')}
+            sizes="(min-width: 768px) 768px, 100vw"
             alt={daRecipe.data.title}
-            width={768}
             class="w-full max-h-96 object-cover rounded-xl mb-8"
           />
         )}
