@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { IngredientGroup } from "./RecipeScaler";
 import { getScaledIngredients, parseIngredient, scaleText } from "./RecipeScaler";
+import { useLocale } from "@/lib/useLocale";
 
 interface Props {
   ingredientGroups: IngredientGroup[];
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function ShoppingListModal({ ingredientGroups, originalServings, currentServings, shoppingIngredients }: Props) {
+  const { t } = useLocale();
   const scaledGroups = getScaledIngredients(ingredientGroups, originalServings, currentServings);
   const ratio = currentServings / originalServings;
 
@@ -52,7 +54,7 @@ export default function ShoppingListModal({ ingredientGroups, originalServings, 
   async function handleCopy() {
     const text = getSelectedTexts().join("\n");
     await navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard!");
+    toast.success(t('copied'));
   }
 
   function handleReminders() {
@@ -75,11 +77,11 @@ export default function ShoppingListModal({ ingredientGroups, originalServings, 
   return (
     <Dialog onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button className="mt-8">🛒 Add to Shopping List</Button>
+        <Button className="mt-8">{t('addToShoppingList')}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Shopping List</DialogTitle>
+          <DialogTitle>{t('shoppingList')}</DialogTitle>
           <DialogClose className="text-stone-400 hover:text-stone-600 text-xl leading-none">×</DialogClose>
         </DialogHeader>
         <div className="px-6 py-4 overflow-y-auto flex-1 space-y-2">
@@ -106,10 +108,10 @@ export default function ShoppingListModal({ ingredientGroups, originalServings, 
         </div>
         <div className="px-6 py-4 border-t border-stone-200 flex gap-3">
           <Button variant="ghost" size="sm" className="mr-auto" onClick={toggleAll}>
-            {allSelected ? "Deselect all" : "Select all"}
+            {allSelected ? t('deselectAll') : t('selectAll')}
           </Button>
-          <Button size="sm" onClick={handleCopy}>📋 Copy</Button>
-          <Button variant="spice" size="sm" onClick={handleReminders}>🍎 Reminders</Button>
+          <Button size="sm" onClick={handleCopy}>{t('copy')}</Button>
+          <Button variant="spice" size="sm" onClick={handleReminders}>{t('reminders')}</Button>
         </div>
       </DialogContent>
     </Dialog>

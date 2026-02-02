@@ -62,7 +62,7 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
 
 <Base title={recipe.data.title}>
   <article>
-    <a href="/" class="text-sm text-stone-400 hover:text-spice transition-colors mb-6 inline-block">
+    <a href="/" class="text-sm text-stone-400 hover:text-spice transition-colors mb-6 inline-block" data-i18n="backToRecipes">
       ← Back to recipes
     </a>
 
@@ -75,8 +75,8 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
       <div class="flex flex-wrap gap-4 mt-4 text-sm text-stone-500">
         {recipe.data.cuisine && <span>🌍 {recipe.data.cuisine}</span>}
         {recipe.data.servings && !hasInteractive && <span>🍽 {recipe.data.servings}</span>}
-        {recipe.data.prepTime && <span>⏱ Prep: {recipe.data.prepTime}</span>}
-        {recipe.data.cookTime && <span>🔥 Cook: {recipe.data.cookTime}</span>}
+        {recipe.data.prepTime && <span>⏱ <span data-i18n="prep">Prep:</span> {recipe.data.prepTime}</span>}
+        {recipe.data.cookTime && <span>🔥 <span data-i18n="cook">Cook:</span> {recipe.data.cookTime}</span>}
       </div>
 
       {recipe.data.tags && (
@@ -110,9 +110,9 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
 
     {(recipe.data.author || recipe.data.source) && (
       <div class="mt-10 pt-6 border-t border-stone-200 text-sm text-stone-400 space-y-1">
-        {recipe.data.author && <p>By {recipe.data.author}</p>}
+        {recipe.data.author && <p><span data-i18n="by">By</span> {recipe.data.author}</p>}
         {recipe.data.source && (
-          <p>Source: <a href={recipe.data.source} target="_blank" rel="noopener" class="text-spice hover:underline">{recipe.data.source}</a></p>
+          <p><span data-i18n="source">Source:</span> <a href={recipe.data.source} target="_blank" rel="noopener" class="text-spice hover:underline">{recipe.data.source}</a></p>
         )}
       </div>
     )}

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import Fuse from 'fuse.js';
+import { useLocale } from '@/lib/useLocale';
 
 interface Recipe {
   id: string;
@@ -21,6 +22,7 @@ interface Props {
 
 export default function RecipeSearch({ recipes }: Props) {
   const [query, setQuery] = useState('');
+  const { t } = useLocale();
 
   const fuse = useMemo(
     () =>
@@ -49,7 +51,7 @@ export default function RecipeSearch({ recipes }: Props) {
       <div className="mb-8">
         <input
           type="text"
-          placeholder="Search recipes…"
+          placeholder={t('searchPlaceholder')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-spice/30 focus:border-spice/40 shadow-sm transition-all"
@@ -57,7 +59,7 @@ export default function RecipeSearch({ recipes }: Props) {
       </div>
 
       {results.length === 0 && query.trim() && (
-        <p className="text-stone-400 text-center py-8">No recipes found for "{query}"</p>
+        <p className="text-stone-400 text-center py-8">{t('noRecipesFound')} "{query}"</p>
       )}
 
       <div className="grid gap-6">
@@ -89,7 +91,7 @@ export default function RecipeSearch({ recipes }: Props) {
                     <p className="text-stone-500 mt-1">{recipe.description}</p>
                   )}
                   <div className="flex flex-wrap gap-3 mt-1 text-xs text-stone-400">
-                    {recipe.author && <span>By {recipe.author}</span>}
+                    {recipe.author && <span>{t('by')} {recipe.author}</span>}
                     {recipe.cookTime && <span>🔥 {recipe.cookTime}</span>}
                     {recipe.prepTime && <span>⏱ {recipe.prepTime}</span>}
                   </div>
