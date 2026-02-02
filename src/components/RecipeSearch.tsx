@@ -76,7 +76,7 @@ export default function RecipeSearch({ recipes }: Props) {
           >
             <div className="flex flex-col sm:flex-row">
               {recipe.image && (
-                <div className="sm:w-48 sm:min-w-[12rem] min-h-48 flex-shrink-0">
+                <div className="aspect-square sm:w-48 sm:min-w-[12rem] sm:aspect-auto sm:self-stretch flex-shrink-0 overflow-hidden bg-stone-100">
                   <img
                     src={`/.netlify/images?url=${encodeURIComponent(recipe.image)}&w=384&h=384&fit=cover&fm=webp&q=75`}
                     alt={recipe.title}
@@ -84,6 +84,7 @@ export default function RecipeSearch({ recipes }: Props) {
                     height={384}
                     className="w-full h-full object-cover"
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
               )}
