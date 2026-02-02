@@ -1,9 +1,30 @@
 ---
 import { getCollection } from 'astro:content';
+import { render } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import RecipeSearch from '../components/RecipeSearch.tsx';
 
 const recipes = (await getCollection('recipes')).sort(
   (a, b) => (b.data.added?.getTime() ?? 0) - (a.data.added?.getTime() ?? 0)
+);
+
+// Build search index data
+const searchData = await Promise.all(
+  recipes.map(async (recipe) => {
+    const { remarkPluginFrontmatter } = await render(recipe);
+    return {
+      id: recipe.id,
+      title: recipe.data.title,
+      description: recipe.data.description,
+      tags: recipe.data.tags,
+      cuisine: recipe.data.cuisine,
+      shoppingIngredients: recipe.data.shoppingIngredients,
+      author: recipe.data.author,
+      image: recipe.data.image,
+      cookTime: recipe.data.cookTime,
+      prepTime: recipe.data.prepTime,
+    };
+  })
 );
 ---
 
@@ -12,53 +33,5 @@ const recipes = (await getCollection('recipes')).sort(
     <h1 class="text-4xl font-bold text-stone-900 mb-2">Recipes</h1>
   </div>
 
-  <div class="grid gap-6">
-    {recipes.map((recipe) => (
-      <a
-        href={`/${recipe.id}/`}
-        class="group block bg-white rounded-xl shadow-sm border border-stone-100 hover:shadow-md hover:border-spice/20 transition-all overflow-hidden"
-      >
-        <div class="flex flex-col sm:flex-row">
-          {recipe.data.image && (
-            <div class="sm:w-48 sm:min-w-[12rem] h-40 sm:h-auto flex-shrink-0">
-              <img
-                src={recipe.data.image}
-                alt={recipe.data.title}
-                class="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          )}
-          <div class="p-6 flex-1 flex items-start justify-between gap-4">
-            <div>
-              <h2 class="text-xl font-serif font-bold text-stone-900 group-hover:text-spice transition-colors">
-                {recipe.data.title}
-              </h2>
-              {recipe.data.description && (
-                <p class="text-stone-500 mt-1">{recipe.data.description}</p>
-              )}
-              <div class="flex flex-wrap gap-3 mt-1 text-xs text-stone-400">
-                {recipe.data.author && <span>By {recipe.data.author}</span>}
-                {recipe.data.cookTime && <span>🔥 {recipe.data.cookTime}</span>}
-                {recipe.data.prepTime && <span>⏱ {recipe.data.prepTime}</span>}
-              </div>
-              <div class="flex flex-wrap gap-2 mt-3">
-                {recipe.data.cuisine && (
-                  <span class="text-xs px-2.5 py-1 bg-warm rounded-full text-stone-600">
-                    {recipe.data.cuisine}
-                  </span>
-                )}
-                {recipe.data.tags?.map((tag) => (
-                  <span class="text-xs px-2.5 py-1 bg-stone-100 rounded-full text-stone-500">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <span class="text-stone-300 group-hover:text-spice transition-colors text-xl mt-1">→</span>
-          </div>
-        </div>
-      </a>
-    ))}
-  </div>
+  <RecipeSearch client:load recipes={searchData} />
 </Base>
