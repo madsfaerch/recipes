@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/confit-tandoori-chickpeas.jpg
 title: Confit Tandoori Kikærter
-description: Ottolenghis langtidsbagte krydrede kikærter svømmende i olivenolie. Absurd godt.
+description: Langtidsbagte krydrede kikærter i olivenolie. Ottolenghi.
 type: main
 cuisine: Indisk / Mellemøstlig
 servings: "4"

@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/crispy-smashed-potatoes-walnut-dressing.jpg
-title: Sprøde Smadrede Kartofler med Valnøddedressing
-description: Babykartofler smadret sprøde og toppet med en umami valnødde-ansjos-dressing. Vanvittigt godt.
+title: Crispy Smashed Kartofler med Valnøddedressing
+description: Små kartofler, smashed og bagt sprøde, med umami valnødde-ansjos-dressing.
 type: side
 cuisine: Amerikansk
 servings: "2–4"

@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/homemade-miso-soup.jpg
-title: Hjemmelavet Misosuppe
-description: Klassisk japansk misosuppe med tofu, wakame og forårsløg i en dashibouillon. Trøstende, nærende og klar på 10 minutter med dashipakker.
+title: Misosuppe
+description: Japansk misosuppe med tofu, wakame og forårsløg i dashi. Klar på 10 minutter med dashipakker.
 type: soup
 cuisine: Japansk
 servings: "4"

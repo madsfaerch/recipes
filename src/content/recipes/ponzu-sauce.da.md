@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/ponzu-sauce.jpg
 title: Ponzusauce
-description: Citrusbaseret japansk dipsauce med soja, mirin og dashi. Træk natten over for bedste resultat — holder en måned.
+description: Japansk dipsauce med citrus, soja, mirin og dashi. Træk natten over — holder en måned.
 type: sauce
 cuisine: Japansk
 servings: "8"

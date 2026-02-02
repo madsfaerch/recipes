@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/soba-dipping-sauce.jpg
 title: Mentsuyu (Soba Dippesauce)
-description: Autentisk japansk nudeldipsauce. Lavet fra bunden med dashi, sojasauce og mirin — holder en måned i køleskabet.
+description: Japansk nudeldipsauce med dashi, sojasauce og mirin. Holder en måned i køleskabet.
 type: sauce
 cuisine: Japansk
 servings: "4"

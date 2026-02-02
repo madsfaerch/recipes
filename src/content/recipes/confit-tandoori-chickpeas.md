@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/confit-tandoori-chickpeas.jpg
 title: Confit Tandoori Chickpeas
-description: Ottolenghi's slow-cooked spiced chickpeas swimming in olive oil. Absurdly good.
+description: Slow-cooked spiced chickpeas in olive oil. Ottolenghi.
 type: main
 cuisine: Indian / Middle Eastern
 servings: "4"

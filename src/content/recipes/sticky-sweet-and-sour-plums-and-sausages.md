@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/sticky-sweet-and-sour-plums-and-sausages.jpg
 title: Sticky Sweet and Sour Plums and Sausages
-description: A sticky, tangy one-tray wonder with pork sausages, roasted plums, and pomegranate molasses.
+description: One-tray dish with pork sausages, roasted plums, and pomegranate molasses.
 type: main
 cuisine: Middle Eastern
 servings: "4"

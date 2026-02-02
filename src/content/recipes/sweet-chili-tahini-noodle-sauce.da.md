@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/sweet-chili-tahini-noodle-sauce.jpg
-title: Sød Chili Tahini Nudelsauce
-description: Krydret, cremet, umamirig sauce til nudler. 15 minutter, én pande.
+title: Sweet Chili Tahini Nudelsauce
+description: Cremet umamisauce til nudler. 15 minutter, én pande.
 type: sauce
 cuisine: Asiatisk Fusion
 servings: "2 portioner"

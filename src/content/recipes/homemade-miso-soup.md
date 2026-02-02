@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/homemade-miso-soup.jpg
-title: Homemade Miso Soup
-description: Classic Japanese miso soup with tofu, wakame, and green onions in a dashi broth. Comforting, nourishing, and ready in 10 minutes with dashi packets.
+title: Miso Soup
+description: Japanese miso soup with tofu, wakame, and green onions in dashi. Ready in 10 minutes with dashi packets.
 type: soup
 cuisine: Japanese
 servings: "4"

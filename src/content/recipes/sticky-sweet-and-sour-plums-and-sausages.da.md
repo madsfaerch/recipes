@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/sticky-sweet-and-sour-plums-and-sausages.jpg
-title: Klæbrige Syltede Blommer og Pølser
-description: Et klæbrigt, syrefriskt one-tray-vidunder med svinemedisterpølser, ristede blommer og granatæblesirup.
+title: Sticky Sweet and Sour Blommer og Pølser
+description: One-tray ret med pølser, ristede blommer og granatæblesirup.
 type: main
 cuisine: Mellemøstlig
 servings: "4"

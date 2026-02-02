@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/crispy-smashed-potatoes-walnut-dressing.jpg
 title: Crispy Smashed Potatoes With Walnut Dressing
-description: Baby potatoes smashed crispy and topped with an umami walnut-anchovy dressing. Ridiculously good.
+description: Baby potatoes smashed crispy with an umami walnut-anchovy dressing.
 type: side
 cuisine: American
 servings: "2–4"

@@ -1,7 +1,7 @@
 ---
 image: /images/recipes/soba-dipping-sauce.jpg
 title: Mentsuyu (Soba Dipping Sauce)
-description: Authentic Japanese noodle dipping sauce. Made from scratch with dashi, soy sauce, and mirin — keeps for a month in the fridge.
+description: Japanese noodle dipping sauce with dashi, soy sauce, and mirin. Keeps for a month in the fridge.
 type: sauce
 cuisine: Japanese
 servings: "4"
