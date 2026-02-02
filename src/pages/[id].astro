@@ -102,10 +102,12 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
 
       {recipe.data.image && (
         <img
-          src={recipe.data.image}
+          src={`/.netlify/images?url=${encodeURIComponent(recipe.data.image)}&w=768&fm=webp&q=80`}
           alt={recipe.data.title}
+          width={768}
           class="w-full max-h-96 object-cover rounded-xl mb-8"
           transition:name={`recipe-img-${recipe.id}`}
+          fetchpriority="high"
         />
       )}
 
@@ -158,8 +160,9 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
 
         {daRecipe.data.image && (
           <img
-            src={daRecipe.data.image}
+            src={`/.netlify/images?url=${encodeURIComponent(daRecipe.data.image)}&w=768&fm=webp&q=80`}
             alt={daRecipe.data.title}
+            width={768}
             class="w-full max-h-96 object-cover rounded-xl mb-8"
           />
         )}
