@@ -101,14 +101,16 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
       </header>
 
       {recipe.data.image && (
-        <img
-          src={`/.netlify/images?url=${encodeURIComponent(recipe.data.image)}&w=768&fm=webp&q=80`}
-          srcset={[384, 640, 768].map(w => `/.netlify/images?url=${encodeURIComponent(recipe.data.image)}&w=${w}&fm=webp&q=80 ${w}w`).join(', ')}
-          sizes="(min-width: 768px) 768px, 100vw"
-          alt={recipe.data.title}
-          class="w-full max-h-96 object-cover rounded-xl mb-8"
-          fetchpriority="high"
-        />
+        <div class="aspect-[2/1] w-full overflow-hidden rounded-xl mb-8 bg-stone-100">
+          <img
+            src={`/.netlify/images?url=${encodeURIComponent(recipe.data.image)}&w=768&fm=webp&q=80`}
+            srcset={[384, 640, 768].map(w => `/.netlify/images?url=${encodeURIComponent(recipe.data.image)}&w=${w}&fm=webp&q=80 ${w}w`).join(', ')}
+            sizes="(min-width: 768px) 768px, 100vw"
+            alt={recipe.data.title}
+            class="w-full h-full object-cover"
+            fetchpriority="high"
+          />
+        </div>
       )}
 
       <div id="recipe-content" class="prose prose-stone prose-headings:font-serif prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-li:my-0.5 max-w-none">
@@ -159,13 +161,15 @@ const hasInteractive = originalServings > 0 && ingredientGroups.length > 0;
         </header>
 
         {daRecipe.data.image && (
-          <img
-            src={`/.netlify/images?url=${encodeURIComponent(daRecipe.data.image)}&w=768&fm=webp&q=80`}
-            srcset={[384, 640, 768].map(w => `/.netlify/images?url=${encodeURIComponent(daRecipe.data.image)}&w=${w}&fm=webp&q=80 ${w}w`).join(', ')}
-            sizes="(min-width: 768px) 768px, 100vw"
-            alt={daRecipe.data.title}
-            class="w-full max-h-96 object-cover rounded-xl mb-8"
-          />
+          <div class="aspect-[2/1] w-full overflow-hidden rounded-xl mb-8 bg-stone-100">
+            <img
+              src={`/.netlify/images?url=${encodeURIComponent(daRecipe.data.image)}&w=768&fm=webp&q=80`}
+              srcset={[384, 640, 768].map(w => `/.netlify/images?url=${encodeURIComponent(daRecipe.data.image)}&w=${w}&fm=webp&q=80 ${w}w`).join(', ')}
+              sizes="(min-width: 768px) 768px, 100vw"
+              alt={daRecipe.data.title}
+              class="w-full h-full object-cover"
+            />
+          </div>
         )}
 
         <div class="prose prose-stone prose-headings:font-serif prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-li:my-0.5 max-w-none">
