@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import Fuse from 'fuse.js';
 import { useLocale } from '@/lib/useLocale';
-import { Flame, Clock, ArrowRight } from 'lucide-react';
+import { Flame, Clock } from 'lucide-react';
 
 interface Recipe {
   id: string;
@@ -68,61 +68,56 @@ export default function RecipeSearch({ recipes }: Props) {
         <p className="text-stone-400 text-center py-8">{t('noRecipesFound')} "{query}"</p>
       )}
 
-      <div className="grid gap-6">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {results.map((recipe) => (
           <a
             key={recipe.id}
             href={`/${recipe.id}/`}
-            className="group block bg-white rounded-xl shadow-sm border border-stone-100 hover:shadow-md hover:border-spice/20 transition-all overflow-hidden"
+            className="group flex flex-col bg-white rounded-xl shadow-sm border border-stone-100 hover:shadow-md hover:border-spice/20 transition-all overflow-hidden"
           >
-            <div className="flex flex-col sm:flex-row">
-              {recipe.image && (
-                <div className="aspect-square sm:w-48 sm:min-w-[12rem] sm:aspect-auto sm:self-stretch flex-shrink-0 overflow-hidden bg-stone-100">
-                  <img
-                    src={`/.netlify/images?url=${encodeURIComponent(recipe.image)}&w=384&fit=cover&fm=webp&q=75`}
-                    srcSet={[192, 384, 640].map(w => `/.netlify/images?url=${encodeURIComponent(recipe.image)}&w=${w}&fit=cover&fm=webp&q=75 ${w}w`).join(', ')}
-                    sizes="(min-width: 640px) 192px, 100vw"
-                    alt={recipe.title}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
+            {recipe.image && (
+              <div className="aspect-[4/3] overflow-hidden bg-stone-100">
+                <img
+                  src={`/.netlify/images?url=${encodeURIComponent(recipe.image)}&w=400&fit=cover&fm=webp&q=75`}
+                  srcSet={[200, 400, 600].map(w => `/.netlify/images?url=${encodeURIComponent(recipe.image)}&w=${w}&fit=cover&fm=webp&q=75 ${w}w`).join(', ')}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  alt={recipe.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            )}
+            <div className="p-4 flex-1 flex flex-col">
+              <h2 className="text-lg font-serif font-bold text-stone-900 group-hover:text-spice transition-colors line-clamp-2">
+                {isDa && recipe.daTitle ? recipe.daTitle : recipe.title}
+              </h2>
+              {(isDa ? recipe.daDescription || recipe.description : recipe.description) && (
+                <p className="text-stone-500 text-sm mt-1 line-clamp-2">{isDa && recipe.daDescription ? recipe.daDescription : recipe.description}</p>
               )}
-              <div className="p-6 flex-1 flex items-start justify-between gap-4">
-                <div>
-                  <h2 className="text-xl font-serif font-bold text-stone-900 group-hover:text-spice transition-colors">
-                    {isDa && recipe.daTitle ? recipe.daTitle : recipe.title}
-                  </h2>
-                  {(isDa ? recipe.daDescription || recipe.description : recipe.description) && (
-                    <p className="text-stone-500 mt-1">{isDa && recipe.daDescription ? recipe.daDescription : recipe.description}</p>
-                  )}
-                  <div className="flex flex-wrap gap-3 mt-1 text-xs text-stone-400">
-                    {recipe.author && <span>{t('by')} {recipe.author}</span>}
-                    {recipe.cookTime && <span className="inline-flex items-center gap-1"><Flame className="w-3 h-3" /> {recipe.cookTime}</span>}
-                    {recipe.prepTime && <span className="inline-flex items-center gap-1"><Clock className="w-3 h-3" /> {recipe.prepTime}</span>}
-                  </div>
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {(isDa ? recipe.daCuisine || recipe.cuisine : recipe.cuisine) && (
-                      <button
-                        onClick={(e) => { e.preventDefault(); setQuery((isDa && recipe.daCuisine ? recipe.daCuisine : recipe.cuisine) || ''); }}
-                        className="text-xs px-2.5 py-1 bg-warm rounded-full text-stone-600 hover:bg-spice/10 hover:text-spice transition-colors cursor-pointer"
-                      >
-                        {isDa && recipe.daCuisine ? recipe.daCuisine : recipe.cuisine}
-                      </button>
-                    )}
-                    {(isDa && recipe.daTags ? recipe.daTags : recipe.tags)?.map((tag) => (
-                      <button
-                        key={tag}
-                        onClick={(e) => { e.preventDefault(); setQuery(tag); }}
-                        className="text-xs px-2.5 py-1 bg-stone-100 rounded-full text-stone-500 hover:bg-spice/10 hover:text-spice transition-colors cursor-pointer"
-                      >
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <ArrowRight className="w-5 h-5 text-stone-300 group-hover:text-spice transition-colors mt-1 flex-shrink-0" />
+              <div className="flex flex-wrap gap-2 mt-2 text-xs text-stone-400">
+                {recipe.author && <span>{t('by')} {recipe.author}</span>}
+                {recipe.cookTime && <span className="inline-flex items-center gap-1"><Flame className="w-3 h-3" /> {recipe.cookTime}</span>}
+                {recipe.prepTime && <span className="inline-flex items-center gap-1"><Clock className="w-3 h-3" /> {recipe.prepTime}</span>}
+              </div>
+              <div className="flex flex-wrap gap-1.5 mt-auto pt-3">
+                {(isDa ? recipe.daCuisine || recipe.cuisine : recipe.cuisine) && (
+                  <button
+                    onClick={(e) => { e.preventDefault(); setQuery((isDa && recipe.daCuisine ? recipe.daCuisine : recipe.cuisine) || ''); }}
+                    className="text-xs px-2 py-0.5 bg-warm rounded-full text-stone-600 hover:bg-spice/10 hover:text-spice transition-colors cursor-pointer"
+                  >
+                    {isDa && recipe.daCuisine ? recipe.daCuisine : recipe.cuisine}
+                  </button>
+                )}
+                {(isDa && recipe.daTags ? recipe.daTags : recipe.tags)?.slice(0, 3).map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={(e) => { e.preventDefault(); setQuery(tag); }}
+                    className="text-xs px-2 py-0.5 bg-stone-100 rounded-full text-stone-500 hover:bg-spice/10 hover:text-spice transition-colors cursor-pointer"
+                  >
+                    {tag}
+                  </button>
+                ))}
               </div>
             </div>
           </a>
